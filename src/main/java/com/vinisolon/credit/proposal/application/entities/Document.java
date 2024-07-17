@@ -1,31 +1,41 @@
 package com.vinisolon.credit.proposal.application.entities;
 
-import com.vinisolon.credit.proposal.application.enums.DocumentTypeEnum;
 import com.vinisolon.credit.proposal.application.entities.keys.DocumentKeys;
-import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(DocumentKeys.class)
 public class Document {
 
-    @EmbeddedId
-    private DocumentKeys keys = new DocumentKeys();
+    @Id
+    @Column(name = "document_number", unique = true)
+    private String documentNumber;
 
+    @Id
+    @Column(name = "customer_id")
+    private Long customerId;
+
+    @MapsId("customerId")
+    @JoinColumn(name = "customer_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id", nullable = false, insertable = false, updatable = false)
     private Customer customer;
 
-    private DocumentTypeEnum type;
+    @Column(name = "document_type")
+    private String documentType;
 
 }

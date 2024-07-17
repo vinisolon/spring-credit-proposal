@@ -1,18 +1,18 @@
-package com.vinisolon.credit.proposal.application.entities.keys;
+package com.vinisolon.credit.proposal.application.dtos.requests;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DocumentKeys {
+public class CreateDocumentRequest {
 
     private String documentNumber;
 
-    private Long customerId;
+    private String documentType;
 
 }
