@@ -1,6 +1,6 @@
 package com.vinisolon.credit.proposal.application.entities;
 
-import com.vinisolon.credit.proposal.application.enums.ProposalStatusEnum;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,8 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -31,24 +31,24 @@ public class Proposal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long proposalId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
-
     @Column(name = "requested_amount")
     private BigDecimal requestedAmount;
 
     @Column(name = "payment_term")
     private Short paymentTerm;
 
-    private ProposalStatusEnum status;
+    private String status;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    @JoinColumn(name = "customer_id")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Customer customer;
 
 }
