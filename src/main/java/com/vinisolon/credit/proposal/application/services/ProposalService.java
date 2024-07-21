@@ -3,7 +3,8 @@ package com.vinisolon.credit.proposal.application.services;
 import com.vinisolon.credit.proposal.application.dtos.requests.CreateCustomerRequest;
 import com.vinisolon.credit.proposal.application.dtos.requests.CreateInitialProposalRequest;
 import com.vinisolon.credit.proposal.application.dtos.requests.CreateNewProposalRequest;
-import com.vinisolon.credit.proposal.application.dtos.responses.ProposalResponse;
+import com.vinisolon.credit.proposal.application.dtos.responses.ConsultProposalResponse;
+import com.vinisolon.credit.proposal.application.dtos.responses.CreateProposalResponse;
 import com.vinisolon.credit.proposal.application.entities.Customer;
 import com.vinisolon.credit.proposal.application.enums.MessageEnum;
 import com.vinisolon.credit.proposal.application.enums.ProposalStatusEnum;
@@ -15,6 +16,8 @@ import com.vinisolon.credit.proposal.application.repositories.ProposalRepository
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProposalService {
@@ -24,7 +27,14 @@ public class ProposalService {
     private final CustomerRepository customerRepository;
     private final DocumentRepository documentRepository;
 
-    public ProposalResponse createInitialProposal(CreateInitialProposalRequest request) {
+    public List<ConsultProposalResponse> getProposals() {
+        return proposalRepository.findAll()
+                .stream()
+                .map(proposalMapper::fromProposalToConsultProposalResponse)
+                .toList();
+    }
+
+    public CreateProposalResponse createInitialProposal(CreateInitialProposalRequest request) {
         validateDocumentsExistence(request.getCustomer());
 
         var proposal = proposalMapper.fromCreateInitialProposalRequestToEntity(request, ProposalStatusEnum.NEW.getValue());
@@ -34,10 +44,10 @@ public class ProposalService {
         return proposalMapper.fromEntityToProposalResponse(proposal);
     }
 
-    public ProposalResponse createNewProposal(CreateNewProposalRequest request) {
+    public CreateProposalResponse createNewProposal(CreateNewProposalRequest request) {
         var customer = getCustomerIfExists(request.getCustomerId());
 
-        var proposal = proposalMapper.FromCreateNewProposalRequestToEntity(request, customer, ProposalStatusEnum.NEW.getValue());
+        var proposal = proposalMapper.fromCreateNewProposalRequestToEntity(request, customer, ProposalStatusEnum.NEW.getValue());
 
         proposal = proposalRepository.save(proposal);
 
