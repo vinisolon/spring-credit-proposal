@@ -30,6 +30,13 @@ public class ProposalController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/{customerId}")
+    public ResponseEntity<?> getProposalsByCustomerId(@PathVariable("customerId") Long customerId) {
+        log.info("Consulting proposals of customer id {}", customerId);
+        var response = proposalService.getProposalsByCustomerId(customerId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> createInitialProposal(@RequestBody CreateInitialProposalRequest request) {

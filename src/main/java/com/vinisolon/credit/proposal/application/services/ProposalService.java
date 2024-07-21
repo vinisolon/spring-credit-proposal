@@ -34,6 +34,13 @@ public class ProposalService {
                 .toList();
     }
 
+    public List<ConsultProposalResponse> getProposalsByCustomerId(Long customerId) {
+        return proposalRepository.findAllByCustomer_CustomerId(customerId)
+                .stream()
+                .map(proposalMapper::fromProposalToConsultProposalResponse)
+                .toList();
+    }
+
     public CreateProposalResponse createInitialProposal(CreateInitialProposalRequest request) {
         validateDocumentsExistence(request.getCustomer());
 
