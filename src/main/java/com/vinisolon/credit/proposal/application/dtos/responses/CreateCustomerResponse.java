@@ -1,19 +1,25 @@
 package com.vinisolon.credit.proposal.application.dtos.responses;
 
-import com.vinisolon.credit.proposal.application.enums.DocumentTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DocumentResponse {
+public class CreateCustomerResponse {
 
-    private String documentNumber;
+    private Long customerId;
 
-    private DocumentTypeEnum documentType;
+    private String fullName;
+
+    private BigDecimal income;
+
+    private List<CreateDocumentResponse> documents;
 
 }

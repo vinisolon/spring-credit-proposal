@@ -15,7 +15,7 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProposalResponse {
+public class CreateProposalResponse {
 
     private Long proposalId;
 
@@ -31,6 +31,6 @@ public class ProposalResponse {
     @JsonFormat(pattern = DateUtils.JSON_DATE_HOUR_PATTERN, timezone = "UTC")
     private Instant updatedAt;
 
-    private CustomerResponse customer;
+    private CreateCustomerResponse customer;
 
 }
