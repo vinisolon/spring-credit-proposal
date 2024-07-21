@@ -25,7 +25,7 @@ public class ProposalService {
     private final DocumentRepository documentRepository;
 
     public ProposalResponse createInitialProposal(CreateInitialProposalRequest request) {
-        validateDocuments(request.getCustomer());
+        validateDocumentsExistence(request.getCustomer());
 
         var proposal = proposalMapper.fromCreateInitialProposalRequestToEntity(request, ProposalStatusEnum.NEW.getValue());
 
@@ -35,7 +35,7 @@ public class ProposalService {
     }
 
     public ProposalResponse createNewProposal(CreateNewProposalRequest request) {
-        var customer = getCustomerById(request.getCustomerId());
+        var customer = getCustomerIfExists(request.getCustomerId());
 
         var proposal = proposalMapper.FromCreateNewProposalRequestToEntity(request, customer, ProposalStatusEnum.NEW.getValue());
 
@@ -44,7 +44,7 @@ public class ProposalService {
         return proposalMapper.fromEntityToProposalResponse(proposal);
     }
 
-    private void validateDocuments(CreateCustomerRequest customer) {
+    private void validateDocumentsExistence(CreateCustomerRequest customer) {
         customer.getDocuments()
                 .forEach(document -> documentRepository.findByDocumentNumber(document.getDocumentNumber())
                         .ifPresent(finded -> {
@@ -53,7 +53,7 @@ public class ProposalService {
                 );
     }
 
-    private Customer getCustomerById(Long customerId) {
+    private Customer getCustomerIfExists(Long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new BusinessException(MessageEnum.CUSTOMER_NOT_FOUND.getMessage()));
     }
