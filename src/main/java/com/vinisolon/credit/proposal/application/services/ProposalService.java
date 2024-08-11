@@ -22,8 +22,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ProposalService {
 
-    private final ProposalRepository proposalRepository;
     private final ProposalMapper proposalMapper;
+    private final ProposalRepository proposalRepository;
     private final CustomerRepository customerRepository;
     private final DocumentRepository documentRepository;
 

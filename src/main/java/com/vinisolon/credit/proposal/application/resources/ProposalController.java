@@ -32,7 +32,7 @@ public class ProposalController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<?> getProposalsByCustomerId(@PathVariable("customerId") Long customerId) {
-        log.info("Consulting proposals of customer id {}", customerId);
+        log.info("Consulting all proposals of customer id {}", customerId);
         var response = proposalService.getProposalsByCustomerId(customerId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
